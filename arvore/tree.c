@@ -141,7 +141,7 @@ void gerar_dicionario(Node *no, char *txt, int alt){
         strcat(esq,"0");
         strcat(dir,"1");
 
-        gerar_dicionario(no->left, esq);
-        gerar_dicionario(no->right, dir);
+        gerar_dicionario(no->left, esq, alt);
+        gerar_dicionario(no->right, dir, alt);
     }
 } 

@@ -17,8 +17,8 @@ int main(){
     printf("\n arvore montada:\n\n");
     imprimir_arvore((&lista)->first, 0);
 
-    int height = altura_arvore((&lista)->first)
-    printf("altura: %d\n\n",height);
+    int height = altura_arvore((&lista)->first);
+    printf("altura: %d\n\n", height);
 
 
     char *txt = (char*)malloc(sizeof(char));
