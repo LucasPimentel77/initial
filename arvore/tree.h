@@ -1,5 +1,6 @@
 #ifndef TREE_H
 #define TREE_H
+#define TAMFALT 48
 
 typedef struct Node{
     int freq;
@@ -28,5 +29,8 @@ char** iniciar_glossario(int alt);
 void imprimir_glossario(Node *no, char *txt, int alt, char **gloss);
 char* codificar(char **gloss, unsigned char *txt);
 void decodificar(char **gloss, unsigned char *txt, int tam);
+void cria_linha_superior();
+void cria_linha_inferior();
+void cria_final_linha(int tam_linha, int tam_str);
 
 #endif

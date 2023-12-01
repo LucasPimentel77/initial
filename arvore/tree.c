@@ -3,6 +3,24 @@
 #include <string.h>
 #include "tree.h"
 
+void cria_linha_superior() {
+    printf("\n ________________________________________________");
+    printf("\n|                                                |");
+}
+
+void cria_linha_inferior() {
+    printf("\n|________________________________________________|");
+}
+
+void cria_final_linha(int tam_linha, int tam_str) {
+    int falt;
+    while(tam_str < tam_linha) {
+        printf("%c", 32);
+        tam_str++;
+    }
+    printf("|");
+}
+
 int* gerar_tabela(unsigned char *str) {
     int i, tam = strlen((char*)str);
     int *tab = (int*)calloc(256, sizeof(int));
@@ -15,11 +33,29 @@ int* gerar_tabela(unsigned char *str) {
 }
 
 void imprimir_tabela(int *tab) {
-    printf("\ntabela de frequencia\n\n");
+    int z;
+    cria_linha_superior();
+    printf("\n|            tabela de frequencia:               |");
+    cria_linha_inferior();
+    printf("\n|                                                |");
+    printf("\n| ASCII | Caracter -> quantidade                 |");
+    cria_linha_inferior();
+    printf("\n|                                                |");
     for (int i = 0; i < 256; i++) {
-        if (tab[i] != 0)
-            printf("%d:'%c' -> %d\n",i , i, tab[i]);
+        if (tab[i] != 0) {
+            if(i>100) {
+                printf("\n|  %d  |  '%c' -> %d",i , i, tab[i]);
+                z=18;
+            } else {
+                printf("\n|  %d   |  '%c' -> %d",i , i, tab[i]);
+                z=18;
+            }
+            cria_final_linha(TAMFALT, z);
+        }
     }
+    cria_linha_inferior();
+    
+    return;
 }
 
 void initLista(LinkedList *lista){
@@ -74,12 +110,16 @@ void listar(LinkedList *lista, int *tab){
 void imprimir_lista(LinkedList *lista){
     if(lista->size == 0)
         printf("lista vazia!");
-    printf("\nlista de caracteres ordenados!\n\n");
+    cria_linha_superior();
+    printf("\n|         lista de caracteres ordenados:         |");
+    cria_linha_inferior();
+    printf("\n|                                                |");
     Node *aux = lista->first;
     while(aux){
-        printf("caractere: %c -> frequencia: %d\n",aux->caractere, aux->freq);
+        printf("\n|        caractere: '%c' -> frequencia: %d         |",aux->caractere, aux->freq);
         aux=aux->next;
     }
+    cria_linha_inferior();
 }
 
 void gerar_arvore(LinkedList *lista){
@@ -96,17 +136,19 @@ void gerar_arvore(LinkedList *lista){
 }
 
 void imprimir_arvore(Node *no, int size){
+    int z = 10;
     if(no->left == NULL && no->right == NULL){
-        for(int i=1; i<size; i++)
-            printf(" | ");
-        printf("'%c'  size:%d\n", no->caractere,size);
-
+        printf("\n|          ");
+        for(int i=1; i<size; i++) {
+            printf(" |");
+        }
+        printf("'%c' size:%d", no->caractere,size);
+        cria_final_linha(TAMFALT-size-8, z+size);
     }
     else{
         imprimir_arvore(no->left, size + 1);
         imprimir_arvore(no->right, size + 1);
     }
-
 }
 
 int max(int a, int b) {
@@ -134,8 +176,11 @@ char** iniciar_glossario(int alt){
 
 void imprimir_glossario(Node *no, char *txt, int alt, char** gloss){
     char dir[alt], esq[alt];
+    int z;
     if(no->left == NULL && no->right == NULL){
-        printf("'%c' = %s \n", no->caractere, txt);
+        printf("\n|                   '%c' = %s", no->caractere, txt);
+        z = strlen(txt);
+        cria_final_linha(TAMFALT, z+25);
         strcpy(gloss[no->caractere],txt);
     }
     else{
