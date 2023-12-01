@@ -3,6 +3,13 @@
 #include <string.h>
 #include "tree.h"
 
+void flush_in() {
+    int ch;
+    do {
+        ch = fgetc(stdin);
+    } while (ch != EOF && ch != '\n');
+}
+
 void cria_linha_superior() {
     printf("\n ________________________________________________");
     printf("\n|                                                |");
@@ -19,6 +26,52 @@ void cria_final_linha(int tam_linha, int tam_str) {
         tam_str++;
     }
     printf("|");
+}
+
+char *lerArquivo(const char *nomeArquivo, int *tamanho){
+        
+    FILE *arquivo = fopen(nomeArquivo, "r");
+    
+        if (arquivo == NULL) {
+            fprintf(stderr, "Não foi possível abrir o arquivo %s\n", nomeArquivo);
+            return NULL;
+        }
+    
+        fseek(arquivo, 0, SEEK_END);
+        *tamanho = ftell(arquivo);
+        fseek(arquivo, 0, SEEK_SET);
+    
+        char *conteudo = (char *)malloc(*tamanho + 1);
+    
+        if (conteudo == NULL) {
+            fprintf(stderr, "Erro ao alocar memória\n");
+            fclose(arquivo);
+            return NULL;
+        }
+    
+        fread(conteudo, 1, *tamanho, arquivo);
+        conteudo[*tamanho] = '\0';
+    
+       // fclose(arquivo);
+    
+        return conteudo;    
+}
+
+int tamanhoArquivo(const char *nomeArquivo) {
+    FILE *arquivo = fopen(nomeArquivo, "r");
+
+    if (arquivo == NULL) {
+        fprintf(stderr, "Não foi possível abrir o arquivo %s\n", nomeArquivo);
+        return -1; // Valor de erro
+    }
+
+    fseek(arquivo, 0, SEEK_END);
+    int tamanho = ftell(arquivo);
+    fseek(arquivo, 0, SEEK_SET);
+
+    fclose(arquivo);
+
+    return tamanho;
 }
 
 int* gerar_tabela(unsigned char *str) {
@@ -167,7 +220,7 @@ int altura_arvore(Node *raiz) {
 
 char** iniciar_glossario(int alt){
     int i;
-    char** gloss = malloc(256 * sizeof(char*));
+    char** gloss = calloc(256,sizeof(char*));
     for(i=0; i<256; i++){
         gloss[i] = calloc(alt,sizeof(char));
     }
@@ -203,6 +256,7 @@ int tamanho_string(char **gloss, unsigned char *txt){
     }
     return tam + 1;
 }
+
 char* codificar(char **gloss, unsigned char *txt){
     int i;
     char *codificado = calloc(tamanho_string(gloss,txt),sizeof(char));
@@ -211,6 +265,7 @@ char* codificar(char **gloss, unsigned char *txt){
     }
     return codificado;
 }
+
 int procura_no_glossario(char **gloss, char *txt){
     int i;
     for(i=0; i<256; i++){
@@ -220,19 +275,84 @@ int procura_no_glossario(char **gloss, char *txt){
     return -1;
 }
 
-void decodificar(char **gloss, unsigned char *txt, int tam){
-    int i=0, j, k=0;
+char* decodificar(char **gloss, unsigned char *txt, int tam){
+    int i=0, j, k1=0, k2=0;
     char *concat = calloc(tam,sizeof(char));
+    char *decodificado = calloc(strlen(txt),sizeof(char));
     while(txt[i]){
-        concat[k] = txt[i];
-        k++;
-        concat[k] = '\0';
+        concat[k1] = txt[i];
+        k1++;
+        concat[k1] = '\0';
         j = procura_no_glossario(gloss,concat);
         if(j >= 0){
-            printf("%c",(char)j);
+            decodificado[k2] = j;
             strcpy(concat,"\0");
-            k=0;
+            k1=0;
+            k2++;
         }
         i++;
     }
+    decodificado[k2] = '\0';
+    return decodificado;
 }
+
+char* converter_bytes(unsigned char *txt){
+    int i;
+    while(strlen(txt)%8 != 0){
+        txt[strlen(txt)] = '0';
+    }
+    txt[strlen(txt)] = '\0';
+    return txt;
+}
+
+int converter_decimal(const char *binario) {
+    int decimal = 0;
+    int base = 1;
+    int tamanho = 0;
+
+    while (binario[tamanho] != '\0') {
+        tamanho++;
+    }
+
+    for (int i = tamanho - 1; i >= 0; i--) {
+        if (binario[i] == '1') {
+            decimal += base;
+        }
+        base *= 2;
+    }
+
+    return decimal;
+}
+
+void compactar(char **gloss, unsigned char *txt){
+    int i, j=0, crt;
+    char concat[256] = "zip_.txt", cat[9];
+ 
+    FILE *compactado = fopen(concat, "w");
+    
+    if (compactado == NULL) {
+            fprintf(stderr, "erro ao abrir o arquivo %s\n", concat);
+            return;
+    }
+    for(int i=0; i<256; i++){
+        if(strlen(gloss[i]) != 0){
+            fprintf(compactado,"%c:%s;", i, gloss[i]);
+        }
+    }
+    fprintf(compactado,"//\n%d\n",tamanho_string(gloss,txt));
+    
+    strcpy(txt,converter_bytes(txt));
+    
+    while(txt[j]){
+        for(int k=0; k<8; k++){
+            cat[k] = txt[j+k];
+        }
+           cat[8] = '\0';
+        
+        crt = converter_decimal(cat);
+        fprintf(compactado,"%c",(char)crt);
+        j+=8;    
+    }
+    printf("\n foi gerado um arquivo compactado com o nome %s\n",concat);
+}
+
