@@ -10,5 +10,4 @@ Lucas dos Santos Pimentel
 Lucas Taveira de Lima
 
 
-# Trabalho 02 - árvore de compressão
 
