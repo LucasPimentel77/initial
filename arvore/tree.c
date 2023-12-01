@@ -108,6 +108,7 @@ void imprimir_arvore(Node *no, int size){
     }
 
 }
+
 int max(int a, int b) {
     return (a > b) ? a : b;
 }
@@ -121,6 +122,7 @@ int altura_arvore(Node *raiz) {
         return 1 + max(esquerda, direita);
     }
 }
+
 char** iniciar_glossario(int alt){
     int i;
     char** gloss = malloc(256 * sizeof(char*));
@@ -129,10 +131,12 @@ char** iniciar_glossario(int alt){
     }
     return gloss;
 }
-void gerar_dicionario(Node *no, char *txt, int alt){
+
+void imprimir_glossario(Node *no, char *txt, int alt, char** gloss){
     char dir[alt], esq[alt];
     if(no->left == NULL && no->right == NULL){
         printf("'%c' = %s \n", no->caractere, txt);
+        strcpy(gloss[no->caractere],txt);
     }
     else{
         strcpy(esq,txt);
@@ -141,7 +145,49 @@ void gerar_dicionario(Node *no, char *txt, int alt){
         strcat(esq,"0");
         strcat(dir,"1");
 
-        gerar_dicionario(no->left, esq, alt);
-        gerar_dicionario(no->right, dir, alt);
+        imprimir_glossario(no->left, esq, alt, gloss);
+        imprimir_glossario(no->right, dir, alt, gloss);
     }
 } 
+
+int tamanho_string(char **gloss, unsigned char *txt){
+    int i = 0, tam = 0;
+    while(txt[i]){
+        tam = tam + strlen(gloss[txt[i]]);
+        i++;
+    }
+    return tam + 1;
+}
+char* codificar(char **gloss, unsigned char *txt){
+    int i;
+    char *codificado = calloc(tamanho_string(gloss,txt),sizeof(char));
+    for(i=0; i<strlen(txt); i++){
+        strcat(codificado,gloss[txt[i]]);
+    }
+    return codificado;
+}
+int procura_no_glossario(char **gloss, char *txt){
+    int i;
+    for(i=0; i<256; i++){
+        if(strcmp(gloss[i],txt) == 0)
+            return i;
+    }
+    return -1;
+}
+
+ decodificar(char **gloss, unsigned char *txt, int tam){
+    int i=0, j, k=0;
+    char *concat = calloc(tam,sizeof(char));
+    while(txt[i]){
+        concat[k] = txt[i];
+        k++;
+        concat[k] = '\0';
+        j = procura_no_glossario(gloss,concat);
+        if(j >= 0){
+            printf("%c",(char)j);
+            strcpy(concat,"\0");
+            k=0;
+        }
+        i++;
+    }
+}
