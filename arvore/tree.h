@@ -23,7 +23,10 @@ void listar(LinkedList *lista, int *tab);
 void imprimir_lista(LinkedList *lista);
 void gerar_arvore(LinkedList *lista);
 void imprimir_arvore(Node *no, int size);
-void gerar_dicionario(Node *no, char *txt, int alt);
 int altura_arvore(Node *raiz);
+char** iniciar_glossario(int alt);
+void imprimir_glossario(Node *no, char *txt, int alt, char **gloss);
+char* codificar(char **gloss, unsigned char *txt);
+void decodificar(char **gloss, unsigned char *txt, int tam);
 
 #endif
