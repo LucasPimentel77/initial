@@ -1,25 +1,20 @@
 tree: clear
-	@echo "=========================================="
-	@echo "             PROGRAMA TREE               "
-	@echo "=========================================="
-	@echo "Compilando o programa Tree"
-	gcc *.c *.h -o tree
-	@echo "Tornando o programa Tree executável"
-	chmod +x tree
-	@echo "Executando o programa Tree"
-	./tree
-	@echo "=========================================="
+	@echo " ________________________________________"
+	@echo "|                                        |"
+	@echo "|	Inicializando o Programa	 |"
+	@echo "|________________________________________|"
+	@gcc *.c *.h -o tree
+	@chmod +x tree
+	@./tree
 clear:
-	@echo "=========================================="
-	@echo "Removendo os programas compilados"
-	@echo "=========================================="
-	@echo "Removendo o programa Tree"	
-	rm -f Tree
-	@echo "=========================================="
+	@rm -f Tree
 help:
-	@echo "=========================================="
-	@echo "         		AJUDA                    "
-	@echo "=========================================="
-	@echo "help				| ajuda"
-	@echo "Tree			| executa mensagem de teste"
-	@echo "clear			| apaga códigos compilados"
+	@echo " ____________________________________________"
+	@echo "|                                            |"
+	@echo "|         	     AJUDA                   |"
+	@echo "|____________________________________________|"
+	@echo "|        |                                   |"
+	@echo "|- help  | ajuda                             |"
+	@echo "|- Tree  | executa mensagem de teste         |"
+	@echo "|- clear | apaga códigos compilados          |"
+	@echo "|________|___________________________________|"
