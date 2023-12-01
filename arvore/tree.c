@@ -220,7 +220,7 @@ int procura_no_glossario(char **gloss, char *txt){
     return -1;
 }
 
- decodificar(char **gloss, unsigned char *txt, int tam){
+void decodificar(char **gloss, unsigned char *txt, int tam){
     int i=0, j, k=0;
     char *concat = calloc(tam,sizeof(char));
     while(txt[i]){
