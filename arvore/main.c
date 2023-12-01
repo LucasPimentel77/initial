@@ -3,7 +3,7 @@
 #include "tree.h"
 
 int main(){
-    unsigned char *str = "eu ja sofri por amar assim";
+    unsigned char *str = "naquela mesa ele sentava sempre";
     LinkedList lista;
     initLista(&lista);
 
@@ -21,9 +21,14 @@ int main(){
     printf("altura: %d\n\n", height);
 
 
-    char *txt = (char*)malloc(sizeof(char));
-    gerar_dicionario((&lista)->first, txt, height);
+    char *txt = (char*)malloc(height*sizeof(char));
+    char **gloss = iniciar_glossario(height);
+    imprimir_glossario((&lista)->first, txt, height, gloss);
+    
+    char *txt_cod = codificar(gloss,str); 
+    printf("texto codificado\n%s\n",txt_cod);
+    
+    decodificar(gloss,txt_cod, height);
 
-    free(x);
     return 0;
 }
