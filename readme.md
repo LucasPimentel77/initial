@@ -3,9 +3,10 @@ Disciplina de Estrutura de Dados 2 do Curso de Bacharelado em Engenharia da Comp
 
 # Alunos:
 
-Lucas dos Santos Pimentel\n
+'''shell
+Lucas dos Santos Pimentel
 Lucas Taveira de Lima
-
+'''
 
 # Trabalho 02 - árvore de compressão
 
