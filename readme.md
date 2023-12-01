@@ -3,8 +3,9 @@ Disciplina de Estrutura de Dados 2 do Curso de Bacharelado em Engenharia da Comp
 
 # Alunos:
 
-'''shell
+'''
 Lucas dos Santos Pimentel
+
 Lucas Taveira de Lima
 '''
 
