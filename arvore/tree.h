@@ -15,6 +15,9 @@ typedef struct LinkedList{
     int size;
 }LinkedList;
 
+void flush_in();
+char* lerArquivo(const char *nomeArquivo, int *tamanho);
+int tamanhoArquivo(const char *nomeArquivo);
 int* gerar_tabela(unsigned char *str);
 void imprimir_tabela(int *tab);
 void initLista(LinkedList *lista);
@@ -28,7 +31,10 @@ int altura_arvore(Node *raiz);
 char** iniciar_glossario(int alt);
 void imprimir_glossario(Node *no, char *txt, int alt, char **gloss);
 char* codificar(char **gloss, unsigned char *txt);
-void decodificar(char **gloss, unsigned char *txt, int tam);
+char* decodificar(char **gloss, unsigned char *txt, int tam);
+char* converter_bytes(unsigned char *txt);
+int converter_decimal(const char *binario);
+void compactar(char **gloss, unsigned char *txt);
 void cria_linha_superior();
 void cria_linha_inferior();
 void cria_final_linha(int tam_linha, int tam_str);
